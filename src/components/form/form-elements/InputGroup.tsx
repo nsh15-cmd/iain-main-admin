@@ -5,14 +5,9 @@ import { EnvelopeIcon } from "../../../icons";
 import PhoneInput from "../group-input/PhoneInput";
 
 export default function InputGroup() {
-  const countries = [
-    { code: "US", label: "+1" },
-    { code: "GB", label: "+44" },
-    { code: "CA", label: "+1" },
-    { code: "AU", label: "+61" },
-  ];
+  const countries = [{ code: "PH", label: "+64" }];
   const handlePhoneNumberChange = (phoneNumber: string) => {
-    console.log("Updated phone number:", phoneNumber);
+    console.log("Updated number:", phoneNumber);
   };
   return (
     <ComponentCard title="Email and Phone">
@@ -35,7 +30,7 @@ export default function InputGroup() {
           <PhoneInput
             selectPosition="start"
             countries={countries}
-            placeholder="+1 (555) 000-0000"
+            placeholder="+64 923 456 7890"
             onChange={handlePhoneNumberChange}
           />
         </div>{" "}

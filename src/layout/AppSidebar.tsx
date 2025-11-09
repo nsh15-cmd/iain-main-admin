@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
     name: "Applicants",
     icon: <ListIcon />,
     subItems: [
-      { name: "Create Applicant", path: "/form-elements", pro: false },
+      { name: "Create Account", path: "/form-elements", pro: false },
       { name: "Applicants Information", path: "/basic-tables", pro: false },
     ],
   },
@@ -51,14 +51,9 @@ const navItems: NavItem[] = [
 const othersItems: NavItem[] = [
   {
     icon: <BoxCubeIcon />,
-    name: "UI Elements",
+    name: "Create Notification",
     subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
+      { name: "Create Notification", path: "/create-notification", pro: false },
     ],
   },
 ];
@@ -84,7 +79,7 @@ const AppSidebar: React.FC = () => {
 
   useEffect(() => {
     let submenuMatched = false;
-    ["main", "others"].forEach((menuType) => {
+    ["main", ""].forEach((menuType) => {
       const items = menuType === "main" ? navItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
@@ -330,7 +325,7 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  "others"
                 ) : (
                   <HorizontaLDots />
                 )}
