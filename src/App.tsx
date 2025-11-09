@@ -18,6 +18,7 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import CreateNotif from "./pages/Notification/CreateNotification";
+import NotificationsPage from "./pages/Notification/Notification";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
             <Route path="/create-notification" element={<CreateNotif />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />

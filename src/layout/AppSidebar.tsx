@@ -51,8 +51,9 @@ const navItems: NavItem[] = [
 const othersItems: NavItem[] = [
   {
     icon: <BoxCubeIcon />,
-    name: "Create Notification",
+    name: "Notification Center",
     subItems: [
+      { name: "Notifications", path: "/notifications", pro: false },
       { name: "Create Notification", path: "/create-notification", pro: false },
     ],
   },
