@@ -12,13 +12,27 @@ import Buttons from "./pages/UiElements/Buttons";
 
 import Calendar from "./pages/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
-import FormElements from "./pages/Forms/FormElements";
+import CreateAccount from "./pages/Forms/CreateAccountForm";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import CreateNotif from "./pages/Notification/CreateNotification";
 import NotificationsPage from "./pages/Notification/Notification";
+
+import { initializeApp } from "firebase/app";
+import ForgotPassword from "./components/auth/ForgotPassword";
+const firebaseConfig = {
+  apiKey: "AIzaSyBVVzJHj2a8z8DEjBAGuvO4zc8fjrm92N8",
+  authDomain: "iain-f7c30.firebaseapp.com",
+  projectId: "iain-f7c30",
+  storageBucket: "iain-f7c30.firebasestorage.app",
+  messagingSenderId: "854098983635",
+  appId: "1:854098983635:web:30a821bfed2ada47093226",
+  measurementId: "G-4BRVSXBWKJ",
+};
+// Initialize Firebase
+initializeApp(firebaseConfig);
 
 export default function App() {
   return (
@@ -36,7 +50,7 @@ export default function App() {
             <Route path="/blank" element={<Blank />} />
 
             {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
+            <Route path="/form-elements" element={<CreateAccount />} />
             <Route path="/create-notification" element={<CreateNotif />} />
             <Route path="/notifications" element={<NotificationsPage />} />
 
@@ -55,7 +69,7 @@ export default function App() {
           {/* Auth Layout */}
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-
+          <Route path="/reset-password" element={<ForgotPassword />} />
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>

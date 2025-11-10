@@ -1,17 +1,17 @@
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
-import DefaultInputs from "../../components/form/form-elements/DefaultInputs";
-import InputGroup from "../../components/form/form-elements/InputGroup";
+import DefaultInputs from "../../components/form/form-elements/ProfileInfoForm";
+import InputGroup from "../../components/form/form-elements/EmailAndPhoneInput";
 import AddressInfo from "../../components/form/form-elements/AddressInput";
 import Button from "../../components/ui/button/Button";
 
 import PageMeta from "../../components/common/PageMeta";
 
-export default function FormElements() {
+export default function CreateAccount() {
   return (
     <div>
       <PageMeta
-        title="React.js Form Elements Dashboard | TailAdmin - React.js Admin Dashboard Template"
-        description="This is React.js Form Elements  Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="IAIN"
+        description="IAIN admin dashboard create account form page"
       />
       <PageBreadcrumb pageTitle="Create Account" />
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">

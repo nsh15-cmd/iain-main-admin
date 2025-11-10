@@ -1,25 +1,75 @@
-import { useState } from "react";
-import { Link } from "react-router";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
+import { useState, ChangeEvent, FormEvent } from "react";
+import { Link, useNavigate } from "react-router";
+import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+import {
+  signInWithEmailAndPassword,
+  // signInWithPopup,
+  // GoogleAuthProvider,
+  getAuth,
+} from "firebase/auth";
 
 export default function SignInForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  // State management
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Handle email/password login
+  const handleSignIn = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Failed to sign in");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // // Handle Google Sign-In
+  // const signInWithGoogle = async () => {
+  //   setLoading(true);
+  //   setError("");
+
+  //   try {
+  //     const provider = new GoogleAuthProvider();
+  //     await signInWithPopup(auth, provider);
+  //     navigate("/");
+  //   } catch (err: any) {
+  //     console.error(err);
+  //     setError(err.message || "Google Sign-in failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
-        <Link
+        {/* <Link
           to="/"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
           Back to dashboard
-        </Link>
+        </Link> */}
       </div>
+
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
@@ -27,19 +77,21 @@ export default function SignInForm() {
               Sign In
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign in!
+              IAIN Admin Sign In
             </p>
           </div>
+
           <div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+            {/* Social Sign-in buttons */}
+            {/* <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+              <button
+                type="button"
+                onClick={signInWithGoogle}
+                disabled={loading}
+                className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
+              >
+                 Google icon 
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M18.7511 10.1944C18.7511 9.47495 18.6915 8.94995 18.5626 8.40552H10.1797V11.6527H15.1003C15.0011 12.4597 14.4654 13.675 13.2749 14.4916L13.2582 14.6003L15.9087 16.6126L16.0924 16.6305C17.7788 15.1041 18.7511 12.8583 18.7511 10.1944Z"
                     fill="#4285F4"
@@ -59,20 +111,8 @@ export default function SignInForm() {
                 </svg>
                 Sign in with Google
               </button>
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
-                <svg
-                  width="21"
-                  className="fill-current"
-                  height="20"
-                  viewBox="0 0 21 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M15.6705 1.875H18.4272L12.4047 8.75833L19.4897 18.125H13.9422L9.59717 12.4442L4.62554 18.125H1.86721L8.30887 10.7625L1.51221 1.875H7.20054L11.128 7.0675L15.6705 1.875ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
-                </svg>
-                Sign in with X
-              </button>
             </div>
+             Divider 
             <div className="relative py-3 sm:py-5">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
@@ -82,22 +122,37 @@ export default function SignInForm() {
                   Or
                 </span>
               </div>
-            </div>
-            <form>
+            </div> */}
+            {/* Sign-in form */}
+            <form onSubmit={handleSignIn}>
               <div className="space-y-6">
+                {/* Email */}
                 <div>
                   <Label>
-                    Email <span className="text-error-500">*</span>{" "}
+                    Email <span className="text-error-500">*</span>
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setEmail(e.target.value)
+                    }
+                    placeholder="info@gmail.com"
+                  />
                 </div>
+
+                {/* Password */}
                 <div>
                   <Label>
-                    Password <span className="text-error-500">*</span>{" "}
+                    Password <span className="text-error-500">*</span>
                   </Label>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPassword(e.target.value)
+                      }
                       placeholder="Enter your password"
                     />
                     <span
@@ -112,6 +167,8 @@ export default function SignInForm() {
                     </span>
                   </div>
                 </div>
+
+                {/* Remember me + Forgot password */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Checkbox checked={isChecked} onChange={setIsChecked} />
@@ -126,17 +183,24 @@ export default function SignInForm() {
                     Forgot password?
                   </Link>
                 </div>
+
+                {/* Error message */}
+                {error && (
+                  <p className="text-sm text-red-500 text-center">{error}</p>
+                )}
+
+                {/* Submit button */}
                 <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
+                  <Button className="w-full" size="sm" disabled={loading}>
+                    {loading ? "Signing in..." : "Sign in"}
                   </Button>
                 </div>
               </div>
             </form>
-
+            {/* Footer
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Don&apos;t have an account? {""}
+                Don&apos;t have an account?{" "}
                 <Link
                   to="/signup"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
@@ -144,7 +208,7 @@ export default function SignInForm() {
                   Sign Up
                 </Link>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

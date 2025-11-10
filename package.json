@@ -23,6 +23,7 @@
     "@react-jvectormap/world": "^1.1.2",
     "apexcharts": "^4.1.0",
     "clsx": "^2.1.1",
+    "firebase": "^12.5.0",
     "flatpickr": "^4.6.13",
     "lucide-react": "^0.553.0",
     "react": "^19.0.0",

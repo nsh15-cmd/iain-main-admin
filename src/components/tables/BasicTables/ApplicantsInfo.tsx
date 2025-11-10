@@ -1,3 +1,5 @@
+// BasicTableOne.tsx
+
 import { useState } from "react";
 import {
   Table,
@@ -8,7 +10,8 @@ import {
 } from "../../ui/table";
 import Badge from "../../ui/badge/Badge";
 import Button from "../../ui/button/Button";
-import EditStatusModal from "./EditStatusModal";
+import EditStatusModal from "../../tables/BasicTables/UserInfoModal";
+import UserInfoModal from "../../tables/BasicTables/UserInfoModal";
 
 interface Order {
   id: number;
@@ -20,6 +23,10 @@ interface Order {
   phone: string;
   email: string;
   status: string;
+  // **UPDATED**
+  age: number;
+  gender: string;
+  address: string;
 }
 
 export default function BasicTableOne() {
@@ -35,17 +42,30 @@ export default function BasicTableOne() {
       phone: "09999999999",
       email: "pinlacnishia@gmail.com",
       status: "Pending",
+      // **UPDATED DATA**
+      age: 24,
+      gender: "Female",
+      address: "123 Main St, New York, USA",
     },
   ]);
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [open, setOpen] = useState(false);
+  // Inside BasicTableOne.tsx component:
+
+  const [openStatusModal, setOpenStatusModal] = useState(false); // Renamed the old 'open'
+  const [openInfoModal, setOpenInfoModal] = useState(false); // New state for info modal
   const [selectedStatus, setSelectedStatus] = useState("");
 
   const handleEditClick = (order: Order) => {
     setSelectedOrder(order);
     setSelectedStatus(order.status);
-    setOpen(true);
+    setOpenStatusModal(true); // Updated
+  };
+
+  // 👈 New handler to open the info modal
+  const handleUserInfoClick = (order: Order) => {
+    setSelectedOrder(order);
+    setOpenInfoModal(true);
   };
 
   const handleSave = (newStatus: string) => {
@@ -56,7 +76,7 @@ export default function BasicTableOne() {
     );
 
     setTableData(updated);
-    setOpen(false);
+    setOpenStatusModal(false); // Updated
   };
 
   return (
@@ -65,6 +85,7 @@ export default function BasicTableOne() {
         <Table>
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
             <TableRow>
+              {/* ... (Existing Table Headers) ... */}
               <TableCell
                 isHeader
                 className="px-5 py-3 text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -89,11 +110,18 @@ export default function BasicTableOne() {
               >
                 Status
               </TableCell>
+
               <TableCell
                 isHeader
                 className="px-5 py-3 text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
                 Edit Status
+              </TableCell>
+              <TableCell
+                isHeader
+                className="px-5 py-3 text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
+                View Info
               </TableCell>
             </TableRow>
           </TableHeader>
@@ -102,7 +130,12 @@ export default function BasicTableOne() {
             {tableData.map((order) => (
               <TableRow key={order.id}>
                 <TableCell className="px-5 py-4 sm:px-6 text-start">
-                  <div className="flex items-center gap-3">
+                  {/* ... (User info display) ... */}
+                  {/* 👈 Added an onClick handler to the User cell */}
+                  <div
+                    className="flex items-center gap-3 cursor-pointer hover:opacity-80"
+                    onClick={() => handleUserInfoClick(order)}
+                  >
                     <div className="w-10 h-10 overflow-hidden rounded-full">
                       <img
                         width={40}
@@ -152,6 +185,15 @@ export default function BasicTableOne() {
                     Edit
                   </Button>
                 </TableCell>
+                <TableCell className="px-4 py-3 text-start">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleUserInfoClick(order)}
+                  >
+                    View Info
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -159,10 +201,16 @@ export default function BasicTableOne() {
       </div>
 
       <EditStatusModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        currentStatus={selectedStatus}
-        onSave={handleSave}
+        isOpen={openStatusModal} // <-- Correct state: opened by Edit button
+        onClose={() => setOpenStatusModal(false)}
+        currentStatus={selectedStatus} // <-- Props specific to status
+        onSave={handleSave} // <-- Props specific to status
+      />
+      {/* 2. User Info Modal (This must use the selectedOrder object) */}
+      <UserInfoModal
+        isOpen={openInfoModal} // <-- Correct state: opened by User/View Info click
+        onClose={() => setOpenInfoModal(false)}
+        order={selectedOrder} // <-- Prop specific to user info
       />
     </div>
   );
